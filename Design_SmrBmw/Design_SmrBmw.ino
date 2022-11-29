@@ -33,9 +33,9 @@
 #define limitSwitch1 6
 //Pin input limit switch for check put unit header 2
 #define limitSwitch2 11
-//Pin select on power to unit header 1
+//Pin select on power to unit header 1, Connect to set pin High
 #define relayModule1 12
-//Pin select on power to unit header 2
+//Pin select on power to unit header 2, Connect to set pin High
 #define relayModule2 10
 /// @brief For data input serial port
 String inputString;
@@ -75,13 +75,13 @@ void Help(){
   Serial.println(F("* Return:                                                      *"));
   Serial.println(F("*  Value ldr from analogRead                                   *"));
   Serial.println(F("* 5. Connect,[Head]                                            *"));
-  Serial.println(F("*  Select on power to unit                                     *"));
+  Serial.println(F("*  Select on power to unit, Set pin High                       *"));
   Serial.println(F("* Parameter:                                                   *"));
   Serial.println(F("*  Head - is Header of machine [1, 2]                          *"));
   Serial.println(F("* Return:                                                      *"));
   Serial.println(F("*  OK                                                          *"));
   Serial.println(F("* 6. DisConnect,[Head]                                         *"));
-  Serial.println(F("*  Off power unit                                              *"));
+  Serial.println(F("*  Off power unit, Set pin Low                                 *"));
   Serial.println(F("* Parameter:                                                   *"));
   Serial.println(F("*  Head - is Header of machine [1, 2]                          *"));
   Serial.println(F("* Return:                                                      *"));
@@ -116,10 +116,10 @@ void serialEvent() {
 void DisConnect(String data){
   String head = SeparateStringByCharacter(data,',',1);
   if(head == "1\n"){
-    digitalWrite(relayModule1, HIGH);
+    digitalWrite(relayModule1, LOW);
   }
   else{
-    digitalWrite(relayModule2, HIGH);
+    digitalWrite(relayModule2, LOW);
   }
   Serial.println("Ok");
 }
@@ -128,10 +128,10 @@ void DisConnect(String data){
 void Connect(String data){
   String head = SeparateStringByCharacter(data,',',1);
   if(head == "1\n"){
-    digitalWrite(relayModule1, LOW);
+    digitalWrite(relayModule1, HIGH);
   }
   else{
-    digitalWrite(relayModule2, LOW);
+    digitalWrite(relayModule2, HIGH);
   }
   Serial.println("Ok");
 }
@@ -243,8 +243,8 @@ void SetPinMode(){
 
   pinMode(relayModule1, OUTPUT);
   pinMode(relayModule2, OUTPUT);
-  digitalWrite(relayModule1, HIGH);
-  digitalWrite(relayModule2, HIGH);
+  digitalWrite(relayModule1, LOW);
+  digitalWrite(relayModule2, LOW);
 }
 /// @brief Function split string
 /// @param data is All data
